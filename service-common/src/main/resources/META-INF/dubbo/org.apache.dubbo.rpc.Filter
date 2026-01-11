@@ -1,0 +1,1 @@
+routeFilter = com.paozero.game.filter.ChannelFixedRouteFilter

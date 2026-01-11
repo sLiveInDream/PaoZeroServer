@@ -1,0 +1,20 @@
+syntax = "proto3";
+option java_multiple_files = true;
+
+package com.paozero.game.protobuf;
+
+message MsgHeader{
+  int32 businessId = 1;
+  int32 code = 2;
+}
+
+message Msg{
+  MsgHeader header = 1;
+  bytes body = 2;
+}
+
+enum ErrorCode{
+  SUCCESS = 0;
+  SYSTEM_ERROR = 1;
+  DUBBO_ROUTER_ERROR = 2;
+}
