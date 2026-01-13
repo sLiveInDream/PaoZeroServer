@@ -1,5 +1,6 @@
 package com.paozero.game.service;
 
+import com.paozero.game.protobuf.BusinessId;
 import com.paozero.game.protobuf.DubboUserServiceTriple;
 import com.paozero.game.protobuf.ErrorCode;
 import com.paozero.game.protobuf.LoginResponse;
@@ -8,7 +9,6 @@ import com.paozero.game.protobuf.MsgHeader;
 import com.paozero.game.protobuf.NotifyService;
 import com.paozero.game.protobuf.RpcRequest;
 import com.paozero.game.protobuf.RpcResponse;
-import com.paozero.game.enums.BusinessIdEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.dubbo.config.annotation.DubboService;
@@ -29,7 +29,7 @@ public class UserService extends DubboUserServiceTriple.UserServiceImplBase {
             //todo 直接把消息传到对应的actor
             try{
                 Msg msg = Msg.parseFrom(request.getMsg());
-                if(msg.getHeader().getBusinessId() == BusinessIdEnum.LOGIN.getId()){
+                if(msg.getHeader().getBusinessId() == BusinessId.LOGIN_VALUE){
                     long userId = 1;
                     MsgHeader msgHeader = MsgHeader.newBuilder().setCode(ErrorCode.SUCCESS_VALUE).setBusinessId(msg.getHeader().getBusinessId()).build();
                     LoginResponse loginResponse = LoginResponse.newBuilder().setUserId(userId).build();

@@ -1,10 +1,10 @@
 package com.paozero.game.remote;
 
+import com.paozero.game.protobuf.BusinessId;
 import com.paozero.game.protobuf.GameService;
 import com.paozero.game.protobuf.Msg;
 import com.paozero.game.protobuf.RpcRequest;
 import com.paozero.game.protobuf.UserService;
-import com.paozero.game.enums.BusinessIdEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.stereotype.Component;
@@ -29,9 +29,10 @@ public class RemoteDispatcher {
 
         try {
             int businessId = msg.getHeader().getBusinessId();
+
             RpcRequest rpcRequest = RpcRequest.newBuilder().setChannelKey(channelKey).setUserId(0).setMsg(msg.toByteString()).build();
 
-            if(businessId == BusinessIdEnum.LOGIN.getId()){
+            if(businessId == BusinessId.LOGIN_VALUE){
                 userService.dispatchAsync(rpcRequest);
             }
         }catch (Exception e){

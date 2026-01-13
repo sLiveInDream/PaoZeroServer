@@ -13,6 +13,11 @@ message Msg{
   bytes body = 2;
 }
 
+enum BusinessId{
+  NONE = 0;
+  LOGIN = 1;
+}
+
 enum ErrorCode{
   SUCCESS = 0;
   SYSTEM_ERROR = 1;
