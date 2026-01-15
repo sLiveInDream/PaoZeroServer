@@ -16,6 +16,7 @@ message Msg{
 enum BusinessId{
   NONE = 0;
   LOGIN = 1;
+  USER_GAME_BUSINESS_DIVIDE = 10000;
 }
 
 enum ErrorCode{

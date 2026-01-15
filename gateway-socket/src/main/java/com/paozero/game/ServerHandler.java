@@ -46,6 +46,10 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         String channelKey = ChannelUtil.getChannelKey(ctx.channel());
         ChannelCache.CONTEXT_CACHE.remove(channelKey);
+        Long userId = ChannelCache.CHANNEL_TO_USER_CACHE.remove(channelKey);
+        if(userId != null){
+            ChannelCache.USER_TO_CHANNEL_CACHE.remove(userId);
+        }
         ActorManager.Instance.stopActor(channelKey);
         ChannelRouterRedisDao.Instance.removeRouterAddress(channelKey);
         super.channelInactive(ctx);

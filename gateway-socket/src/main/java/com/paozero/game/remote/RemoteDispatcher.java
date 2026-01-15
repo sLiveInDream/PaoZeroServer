@@ -1,5 +1,6 @@
 package com.paozero.game.remote;
 
+import com.paozero.game.channel.ChannelCache;
 import com.paozero.game.protobuf.BusinessId;
 import com.paozero.game.protobuf.GameService;
 import com.paozero.game.protobuf.Msg;
@@ -30,9 +31,18 @@ public class RemoteDispatcher {
         try {
             int businessId = msg.getHeader().getBusinessId();
 
-            RpcRequest rpcRequest = RpcRequest.newBuilder().setChannelKey(channelKey).setUserId(0).setMsg(msg.toByteString()).build();
+            Long userId = ChannelCache.CHANNEL_TO_USER_CACHE.get(channelKey);
+            if(userId == null){
+                if(businessId == BusinessId.LOGIN_VALUE){
+                    userId = 0L;
+                }else {
+                    log.error("RemoteDispatcher dispatch error, channelKey:{} not bind userId, msg:{}",channelKey,msg);
+                    return;
+                }
+            }
+            RpcRequest rpcRequest = RpcRequest.newBuilder().setChannelKey(channelKey).setUserId(userId).setMsg(msg.toByteString()).build();
 
-            if(businessId == BusinessId.LOGIN_VALUE){
+            if(businessId > BusinessId.NONE_VALUE && businessId < BusinessId.USER_GAME_BUSINESS_DIVIDE_VALUE){
                 userService.dispatchAsync(rpcRequest);
             }
         }catch (Exception e){
