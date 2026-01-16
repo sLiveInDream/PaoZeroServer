@@ -1,7 +1,7 @@
 package com.paozero.game;
 
 import akka.actor.ActorRef;
-import com.paozero.game.akka.ActorManager;
+import com.paozero.game.logic.ActorManager;
 import com.paozero.game.channel.ChannelCache;
 import com.paozero.game.channel.ChannelUtil;
 import com.paozero.game.config.DubboConfig;
@@ -12,6 +12,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleStateEvent;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.common.utils.StringUtils;
 
 @Slf4j
 public class ServerHandler extends ChannelInboundHandlerAdapter {
@@ -46,9 +47,9 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         String channelKey = ChannelUtil.getChannelKey(ctx.channel());
         ChannelCache.CONTEXT_CACHE.remove(channelKey);
-        Long userId = ChannelCache.CHANNEL_TO_USER_CACHE.remove(channelKey);
-        if(userId != null){
-            ChannelCache.USER_TO_CHANNEL_CACHE.remove(userId);
+        String openId = ChannelCache.CHANNEL_TO_USER_CACHE.remove(channelKey);
+        if(StringUtils.isEmpty(openId)){
+            ChannelCache.USER_TO_CHANNEL_CACHE.remove(openId);
         }
         ActorManager.Instance.stopActor(channelKey);
         ChannelRouterRedisDao.Instance.removeRouterAddress(channelKey);

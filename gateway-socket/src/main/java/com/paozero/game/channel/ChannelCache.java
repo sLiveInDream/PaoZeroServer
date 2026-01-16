@@ -8,9 +8,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ChannelCache {
     //channelKey -> ChannelHandlerContext
     public static Map<String, ChannelHandlerContext> CONTEXT_CACHE = new ConcurrentHashMap<>();
-    // channelKey -> userId
-    public static Map<String, Long> CHANNEL_TO_USER_CACHE = new ConcurrentHashMap<>();
-    // userId -> channelKey
-    public static Map<Long, String> USER_TO_CHANNEL_CACHE = new ConcurrentHashMap<>();
+    // channelKey -> openId
+    public static Map<String, String> CHANNEL_TO_USER_CACHE = new ConcurrentHashMap<>();
+    // openId -> channelKey
+    public static Map<String, String> USER_TO_CHANNEL_CACHE = new ConcurrentHashMap<>();
 
 }

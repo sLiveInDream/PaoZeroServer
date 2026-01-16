@@ -3,16 +3,18 @@ option java_multiple_files = true;
 option java_outer_classname = "ServiceProto";
 
 package com.paozero.game.protobuf;
+import "base.proto";
 
 message RpcRequest{
   string channelKey = 1;
-  int64 userId = 2;
+  string openId = 2;
   string traceId = 3;
-  bytes msg = 4;
+  Msg msg = 4;
 }
 
 message RpcResponse{
   int32 code = 1;
+  int32 businessId = 2;
 }
 
 service UserService{

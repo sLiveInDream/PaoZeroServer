@@ -10,6 +10,7 @@ import com.paozero.game.protobuf.RpcRequest;
 import com.paozero.game.protobuf.RpcResponse;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.common.utils.StringUtils;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.stereotype.Service;
 
@@ -26,14 +27,15 @@ public class NotifyService extends DubboNotifyServiceTriple.NotifyServiceImplBas
         return CompletableFuture.supplyAsync(() ->{
             log.info("NotifyService run");
             try {
-                Msg msg = Msg.parseFrom(request.getMsg());
+                Msg msg = request.getMsg();
                 if(msg.getHeader().getBusinessId() == BusinessId.LOGIN_VALUE){
                     LoginResponse loginResponse = LoginResponse.parseFrom(msg.getBody());
-                    if(loginResponse.getUserId() == 0){
-                        log.error("NotifyService dispatchAsync login response userId is 0! request:{}", request);
+                    if(StringUtils.isEmpty(loginResponse.getOpenId())){
+                        log.error("NotifyService dispatchAsync login response openId is empty! request:{}", request);
+                        return RpcResponse.newBuilder().setCode(ErrorCode.SYSTEM_ERROR_VALUE).build();
                     }
-                    ChannelCache.CHANNEL_TO_USER_CACHE.put(request.getChannelKey(), loginResponse.getUserId());
-                    ChannelCache.USER_TO_CHANNEL_CACHE.put(loginResponse.getUserId(), request.getChannelKey());
+                    ChannelCache.CHANNEL_TO_USER_CACHE.put(request.getChannelKey(), loginResponse.getOpenId());
+                    ChannelCache.USER_TO_CHANNEL_CACHE.put(loginResponse.getOpenId(), request.getChannelKey());
                 }
 
                 ChannelHandlerContext channelHandlerContext = ChannelCache.CONTEXT_CACHE.get(request.getChannelKey());

@@ -1,10 +1,11 @@
-package com.paozero.game.akka;
+package com.paozero.game.logic;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.PoisonPill;
 import akka.actor.Props;
-import com.paozero.game.akka.actor.ConnectActor;
+import com.paozero.game.logic.actor.ConnectActor;
+import com.paozero.game.logic.enums.ActorTypeEnum;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -33,7 +34,7 @@ public class ActorManager {
     }
 
     public void createConnectActor(String channelKey){
-        ActorRef actorRef = actorSystem.actorOf(Props.create(ConnectActor.class, ()->new ConnectActor(channelKey)), "connectActor");
+        ActorRef actorRef = actorSystem.actorOf(Props.create(ConnectActor.class, ()->new ConnectActor(channelKey)), ActorTypeEnum.CONNECT.name());
         actorRefMap.put(channelKey, actorRef);
     }
 

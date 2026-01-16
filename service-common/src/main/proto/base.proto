@@ -22,5 +22,5 @@ enum BusinessId{
 enum ErrorCode{
   SUCCESS = 0;
   SYSTEM_ERROR = 1;
-  DUBBO_ROUTER_ERROR = 2;
+  NOT_LOGIN = 2;
 }

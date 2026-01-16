@@ -1,4 +1,4 @@
-package com.paozero.game.akka.actor;
+package com.paozero.game.logic.actor;
 
 import akka.actor.AbstractActor;
 import com.paozero.game.protobuf.Msg;
