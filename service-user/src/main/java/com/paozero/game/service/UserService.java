@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 @Slf4j
@@ -94,7 +95,6 @@ public class UserService extends DubboUserServiceTriple.UserServiceImplBase {
     }
 
     private String generateNewOpenId(){
-        //TODO 生成新的openid
-        return "new_openId_test";
+        return UUID.randomUUID().toString().replace("-", "");
     }
 }

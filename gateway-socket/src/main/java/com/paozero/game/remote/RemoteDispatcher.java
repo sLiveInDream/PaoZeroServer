@@ -39,7 +39,7 @@ public class RemoteDispatcher {
                     return;
                 }
             }
-            RpcRequest rpcRequest = RpcRequest.newBuilder().setChannelKey(null).setOpenId(openId).setMsg(msg).build();
+            RpcRequest rpcRequest = RpcRequest.newBuilder().setChannelKey(channelKey).setOpenId(openId == null?"":openId).setMsg(msg).build();
 
             if(businessId > BusinessId.NONE_VALUE && businessId < BusinessId.USER_GAME_BUSINESS_DIVIDE_VALUE){
                 userService.dispatchAsync(rpcRequest);
